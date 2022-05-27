@@ -47,9 +47,16 @@ near view $CONTRACT_NAME ft_total_supply --accountId phuc16102001.testnet
 ```
 ### Get metadata
 
-```rs
+```bash
 near view $CONTRACT_NAME ft_metadata --accountId phuc16102001.testnet
 ```
+
+### Registry
+```bash
+near call $CONTRACT_NAME storage_deposit '{"account_id":"thanhhoang4869.testnet", "registration_only": true}' --accountId thanhhoang4869.testnet --amount 1
+```
+
+In this method, you need to stake a small amount of NEAR in order to allocate storage. By default, I staked 1 NEAR and the method will automatically refund the unused coin since using `registration_only` parameter.
 
 ### Get balance
 
@@ -59,8 +66,8 @@ near view $CONTRACT_NAME ft_balance_of '{"account_id": "phuc16102001.testnet"}' 
 
 ### Transfer
 
-```
-near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet
+```bash
+near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet --depositYocto 1
 ```
 
 ## Data structure
@@ -75,7 +82,7 @@ pub struct FungibleToken {
 }
 ```
 
-And there are meta data related to the Token:
+And there are meta data related to the token:
 
 ```rs
 pub struct FungibleTokenMetadata {
@@ -88,6 +95,8 @@ pub struct FungibleTokenMetadata {
     pub decimals: u8,
 }
 ```
+
+The icon field is a string which can be either Base64 image, or XML-SVG image.
 
 ## Interface
 
@@ -107,5 +116,17 @@ Also, you can verify the meta data of the FT with its provider:
 ```rs
 pub trait FungibleTokenMetadataProvider {
     fn ft_metadata;
+}
+```
+
+Finally, because of using storage staking, indeed, it must implement the `Storage management` trait:
+
+```rs
+pub trait StorageManagement {
+    fn storage_deposit;
+    fn storage_withdraw;
+    fn storage_unregister;
+    fn storage_balance_bounds;
+    fn storage_balance_of;
 }
 ```
