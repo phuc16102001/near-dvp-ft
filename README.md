@@ -2,11 +2,68 @@
 
 ## What is Fungible Token (FT)
 
+Fungible tokens (shorten as FT) are digital assets which:
+- Interchangable
+- Divisible
+- Non-unique
+
+Usually, FT has metadata such as: name, symbol, icon, decimals, etc. However, many people may misunderstand that coins and tokens are same, but they aren't. Regarding coins, they have their own block-chain technology behind (e.g. Bitcoin, ETH, NEAR). On the other hand, tokens are created by using smart contract on those chain (e.g. Dai, wNEAR, USDT). You can check whether they are on the [Coin marketcap](https://coinmarketcap.com/).
+
+These FTs are frequently used for representing membership, trading, etc. Furthermore, tokens are built using the shared standard like ERC20, NEP141. Another explaination is that if you think block-chain is your country, coins will be your native currency, while tokens are business stocks.
+
+This repository is a smart contract for creating a token called DVP (Do Vuong Phuc). It based on the [NEP141](https://nomicon.io/Standards/Tokens/FungibleToken/Core) standard of NEAR Protocol
+
 ## Build and deploy contract
+
+To build the source code, you just need to run the script `build.sh`:
+```bash
+./build.sh
+```
+
+After that, you can deploy the built file `out/dvp-ft.wasm` by yourself:
+```bash
+near dev-deploy out/dvp-ft.wasm
+```
 
 ## Usage
 
-## Structure
+After deploying, the NEAR CLI will create a `neardev` folder which store the contract name:
+```bash
+source neardev/dev-account.env
+```
+
+Now, you can initialize the contract by specifying the `owner_id` and `total_supply`:
+```bash
+near call $CONTRACT_NAME new_default_meta '{"owner_id": "phuc16102001.testnet", "total_supply": "1000"}' --accountId phuc16102001.testnet
+```
+
+However, bare in mind that once you have initialized, you cannot undo again. 
+
+## Operation
+### Get total supply
+
+```bash
+near view $CONTRACT_NAME ft_total_supply --accountId phuc16102001.testnet
+```
+### Get metadata
+
+```rs
+near view $CONTRACT_NAME ft_metadata --accountId phuc16102001.testnet
+```
+
+### Get balance
+
+```bash
+near view $CONTRACT_NAME ft_balance_of '{"account_id": "phuc16102001.testnet"}' --accountId phuc16102001.testnet
+```
+
+### Transfer
+
+```
+near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet
+```
+
+## Data structure
 
 The DVP fungible token uses the NEP141 standard of NEAR Protocol whose structure likes:
 
@@ -32,7 +89,7 @@ pub struct FungibleTokenMetadata {
 }
 ```
 
-## Operations
+## Interface
 
 With all the fungible token, they have the same schema of basic function. In NEP141, NEAR team created an interface called:
 
@@ -51,24 +108,4 @@ Also, you can verify the meta data of the FT with its provider:
 pub trait FungibleTokenMetadataProvider {
     fn ft_metadata;
 }
-```
-
-### Transfer
-
-```rs
-```
-
-### Transfer and call
-
-```rs
-```
-
-### Get total supply
-
-```rs
-```
-
-### Get balance
-
-```rs
 ```
