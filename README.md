@@ -39,16 +39,37 @@ near call $CONTRACT_NAME new_default_meta '{"owner_id": "phuc16102001.testnet", 
 
 However, bare in mind that once you have initialized, you cannot undo again. 
 
-## Operation
+## Operation - Fungible token
 ### Get total supply
 
 ```bash
-near view $CONTRACT_NAME ft_total_supply --accountId phuc16102001.testnet
+near view $CONTRACT_NAME ft_total_supply
 ```
 ### Get metadata
 
 ```bash
-near view $CONTRACT_NAME ft_metadata --accountId phuc16102001.testnet
+near view $CONTRACT_NAME ft_metadata
+```
+
+### Get balance
+
+```bash
+near view $CONTRACT_NAME ft_balance_of '{"account_id": "phuc16102001.testnet"}'
+```
+
+### Transfer
+
+```bash
+near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet --depositYocto 1
+```
+
+## Operation - Storage staking
+
+These operations are for implementing application. Because of allocating account require an amount of money, so the user must pay it to registry. 
+
+### Verify storage staking
+```bash
+near view $CONTRACT_NAME storage_balance_of '{"account_id": "phuc16102001.testnet"}'
 ```
 
 ### Registry
@@ -58,17 +79,6 @@ near call $CONTRACT_NAME storage_deposit '{"account_id":"thanhhoang4869.testnet"
 
 In this method, you need to stake a small amount of NEAR in order to allocate storage. By default, I staked 1 NEAR and the method will automatically refund the unused coin since using `registration_only` parameter.
 
-### Get balance
-
-```bash
-near view $CONTRACT_NAME ft_balance_of '{"account_id": "phuc16102001.testnet"}' --accountId phuc16102001.testnet
-```
-
-### Transfer
-
-```bash
-near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet --depositYocto 1
-```
 
 ## Data structure
 
