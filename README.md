@@ -65,7 +65,7 @@ near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", 
 
 ## Operation - Storage staking
 
-These operations are for implementing application. Because of allocating account require an amount of money, so the user must pay it to registry. 
+These operations are for implementing application. Because of allocating account require an amount of money, so the user must pay it to registry. This schema was based-on the [NEP145](https://nomicon.io/Standards/StorageManagement) standard.
 
 ### Verify storage staking
 ```bash
