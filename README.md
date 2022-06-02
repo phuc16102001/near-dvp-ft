@@ -63,6 +63,14 @@ near view $CONTRACT_NAME ft_balance_of '{"account_id": "phuc16102001.testnet"}'
 near call $CONTRACT_NAME ft_transfer '{"receiver_id": "thanhhoang4869.testnet", "amount": "3", "memo": "Invest tokens"}' --accountId phuc16102001.testnet --depositYocto 1
 ```
 
+### Transfer and callback
+
+```bash
+near call $CONTRACT_NAME ft_transfer_call '{"receiver_id": "faucet.phuc16102001.testnet", "amount": "100", "msg": "faucet-increase"}' --accountId phuc16102001.testnet --depositYocto 1
+```
+
+This method usually used to do the cross-contract call. For instance, the example above called for increasing faucet pool tokens. After the transfer occuring, the contract receiving contract's `ft_on_transfer` will be called. If the receiver did not implement that, the `ft_resolve_transfer` MUST be implemented in order to roll-back
+
 ## Operation - Storage staking
 
 These operations are for implementing application. Because of allocating account require an amount of money, so the user must pay it to registry. This schema was based-on the [NEP145](https://nomicon.io/Standards/StorageManagement) standard.
